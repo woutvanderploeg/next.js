@@ -7,12 +7,14 @@ import {
   ACTION_BEFORE_REFRESH,
   ACTION_BUILD_ERROR,
   ACTION_BUILD_OK,
+  ACTION_DEBUG_INFO,
   ACTION_REFRESH,
   ACTION_STATIC_INDICATOR,
   ACTION_UNHANDLED_ERROR,
   ACTION_UNHANDLED_REJECTION,
   ACTION_VERSION_INFO,
   useErrorOverlayReducer,
+  type DebugInfo,
 } from '../shared'
 import { parseStack } from '../internal/helpers/parseStack'
 import ReactDevOverlay from './ReactDevOverlay'
@@ -39,6 +41,7 @@ export interface Dispatcher {
   onBuildOk(): void
   onBuildError(message: string): void
   onVersionInfo(versionInfo: VersionInfo): void
+  onDebugInfo(debugInfo: DebugInfo): void
   onBeforeRefresh(): void
   onRefresh(): void
   onStaticIndicator(status: boolean): void
@@ -356,6 +359,7 @@ function processMessage(
 
       // Is undefined when it's a 'built' event
       if ('versionInfo' in obj) dispatcher.onVersionInfo(obj.versionInfo)
+      if ('debug' in obj && obj.debug) dispatcher.onDebugInfo(obj.debug)
 
       const hasErrors = Boolean(errors && errors.length)
       // Compilation with errors (e.g. syntax error or missing modules).
@@ -529,6 +533,9 @@ export default function HotReload({
       },
       onStaticIndicator(status: boolean) {
         dispatch({ type: ACTION_STATIC_INDICATOR, staticIndicator: status })
+      },
+      onDebugInfo(debugInfo) {
+        dispatch({ type: ACTION_DEBUG_INFO, debugInfo })
       },
     }
   }, [dispatch])
