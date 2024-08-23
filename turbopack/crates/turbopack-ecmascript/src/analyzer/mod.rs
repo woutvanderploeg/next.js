@@ -4141,6 +4141,7 @@ mod tests {
                             Effect::ImportMeta { .. } => {}
                             Effect::ImportedBinding { .. } => {}
                             Effect::Member { .. } => {}
+                            Effect::Worker { .. } => {}
                             Effect::Url { .. } => {}
                         }
                         let time = start.elapsed();
