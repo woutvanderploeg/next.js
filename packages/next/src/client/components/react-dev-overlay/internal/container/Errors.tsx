@@ -289,6 +289,7 @@ export function Errors({
               <span>
                 {error.stack && (
                   <CopyButton
+                    data-nextjs-data-runtime-error-copy-stack
                     actionLabel="Copy error stack"
                     successLabel="Copied"
                     content={error.stack}
@@ -296,6 +297,7 @@ export function Errors({
                 )}
                 {debugInfo?.devtoolsFrontendUrl && (
                   <CopyButton
+                    data-nextjs-data-runtime-error-copy-devtools-url
                     actionLabel="Copy Chrome DevTools URL"
                     successLabel="Copied"
                     content={debugInfo.devtoolsFrontendUrl}

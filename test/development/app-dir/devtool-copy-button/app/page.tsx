@@ -1,5 +1,4 @@
-'use client'
 export default function Page() {
-  throw new Error('hello world')
+  throw new Error('oops')
   return <p>hello world</p>
 }
