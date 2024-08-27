@@ -754,7 +754,7 @@ export default class HotReloaderWebpack implements NextJsHotReloaderInterface {
     )
 
     const nodeDebugType = getNodeDebugType()
-    if (nodeDebugType) {
+    if (nodeDebugType && !this.devtoolsFrontendUrl) {
       const debugPort = process.debugPort
       let debugInfo
       try {
