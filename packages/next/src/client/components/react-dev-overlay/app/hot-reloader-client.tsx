@@ -14,7 +14,6 @@ import {
   ACTION_UNHANDLED_REJECTION,
   ACTION_VERSION_INFO,
   useErrorOverlayReducer,
-  type DebugInfo,
 } from '../shared'
 import { parseStack } from '../internal/helpers/parseStack'
 import ReactDevOverlay from './ReactDevOverlay'
@@ -36,6 +35,7 @@ import type {
 import { extractModulesFromTurbopackMessage } from '../../../../server/dev/extract-modules-from-turbopack-message'
 import { REACT_REFRESH_FULL_RELOAD_FROM_ERROR } from '../shared'
 import type { HydrationErrorState } from '../internal/helpers/hydration-error-info'
+import type { DebugInfo } from '../action-state'
 
 export interface Dispatcher {
   onBuildOk(): void

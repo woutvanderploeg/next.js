@@ -4,16 +4,13 @@ import type { StackFrame } from 'next/dist/compiled/stacktrace-parser'
 import type { VersionInfo } from '../../../server/dev/parse-version-info'
 import type { SupportedErrorEvent } from './internal/container/Errors'
 import type { ComponentStackFrame } from './internal/helpers/parse-component-stack'
+import type { DebugInfo } from './action-state'
 
 type FastRefreshState =
   /** No refresh in progress. */
   | { type: 'idle' }
   /** The refresh process has been triggered, but the new code has not been executed yet. */
   | { type: 'pending'; errors: SupportedErrorEvent[] }
-
-export type DebugInfo = {
-  devtoolsFrontendUrl: string | undefined
-}
 
 export interface OverlayState {
   nextId: number

@@ -2,10 +2,10 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 import {
   ACTION_UNHANDLED_ERROR,
   ACTION_UNHANDLED_REJECTION,
-  type DebugInfo,
   type UnhandledErrorAction,
   type UnhandledRejectionAction,
 } from '../../shared'
+import type { DebugInfo } from '../../action-state'
 import {
   Dialog,
   DialogBody,
