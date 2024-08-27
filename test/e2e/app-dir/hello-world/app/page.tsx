@@ -1,5 +1,3 @@
-'use client'
 export default function Page() {
-  throw new Error('hello world')
   return <p>hello world</p>
 }
