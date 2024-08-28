@@ -762,6 +762,7 @@ export default class HotReloaderWebpack implements NextJsHotReloaderInterface {
         const debugInfoList = await fetch(
           `http://127.0.0.1:${debugPort}/json/list`
         ).then((res) => res.json())
+        // There will be only one item for current process, so always get the first item.
         debugInfo = debugInfoList[0]
       } catch {}
       if (debugInfo) {

@@ -5,7 +5,7 @@ import {
   type UnhandledErrorAction,
   type UnhandledRejectionAction,
 } from '../../shared'
-import type { DebugInfo } from '../../action-state'
+import type { DebugInfo } from '../../types'
 import {
   Dialog,
   DialogBody,
@@ -29,9 +29,8 @@ import {
   type HydrationErrorState,
   getHydrationWarningType,
 } from '../helpers/hydration-error-info'
-import NodeJsIcon from '../components/icons/nodejs'
+import { NodejsInspectorCopyButton } from '../components/nodejs-inspector'
 import { CopyButton } from '../components/copy-button'
-import { isChromeDesktop } from '../../../../lib/is-chrome'
 
 export type SupportedErrorEvent = {
   id: number
@@ -69,8 +68,6 @@ function getErrorSignature(ev: SupportedErrorEvent): string {
   const _: never = event
   return ''
 }
-
-const isBrowserChromeDesktop = isChromeDesktop()
 
 export function Errors({
   isAppDir,
@@ -298,15 +295,8 @@ export function Errors({
                   disabled={!error.stack}
                 />
 
-                <CopyButton
-                  data-nextjs-data-runtime-error-copy-devtools-url
-                  actionLabel="Copy Chrome DevTools URL"
-                  successLabel="Copied"
-                  content={debugInfo?.devtoolsFrontendUrl || ''}
-                  icon={<NodeJsIcon width={16} height={16} />}
-                  disabled={
-                    !debugInfo?.devtoolsFrontendUrl || !isBrowserChromeDesktop
-                  }
+                <NodejsInspectorCopyButton
+                  devtoolsFrontendUrl={debugInfo?.devtoolsFrontendUrl}
                 />
               </span>
             </div>

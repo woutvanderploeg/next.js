@@ -4,7 +4,7 @@ import type { StackFrame } from 'next/dist/compiled/stacktrace-parser'
 import type { VersionInfo } from '../../../server/dev/parse-version-info'
 import type { SupportedErrorEvent } from './internal/container/Errors'
 import type { ComponentStackFrame } from './internal/helpers/parse-component-stack'
-import type { DebugInfo } from './action-state'
+import type { DebugInfo } from './types'
 
 type FastRefreshState =
   /** No refresh in progress. */
