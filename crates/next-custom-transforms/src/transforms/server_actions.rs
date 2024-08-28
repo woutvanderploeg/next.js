@@ -17,6 +17,7 @@ use swc_core::{
     ecma::{
         ast::*,
         atoms::JsWord,
+        codegen::{to_code, to_code_with_comments},
         utils::{private_ident, quote_ident, ExprFactory},
         visit::{as_folder, noop_visit_mut_type, Fold, VisitMut, VisitMutWith},
     },
@@ -690,8 +691,26 @@ impl<C: Comments> VisitMut for ServerActions<C> {
     }
 
     fn visit_mut_module(&mut self, m: &mut Module) {
+        {
+            let mut m = m.clone();
+            m.visit_mut_children_with(&mut PrintHygiene);
+
+            eprintln!(
+                "# Server action:\n{}",
+                to_code_with_comments(Some(&self.comments), &m)
+            );
+        }
         self.start_pos = m.span.lo;
         m.visit_mut_children_with(self);
+        {
+            let mut m = m.clone();
+            m.visit_mut_children_with(&mut PrintHygiene);
+
+            eprintln!(
+                "# After Server action:\n{}",
+                to_code_with_comments(Some(&self.comments), &m)
+            );
+        }
     }
 
     fn visit_mut_stmt(&mut self, n: &mut Stmt) {
@@ -1849,5 +1868,13 @@ impl From<Name> for Box<Expr> {
         }
 
         expr
+    }
+}
+
+struct PrintHygiene;
+
+impl VisitMut for PrintHygiene {
+    fn visit_mut_ident(&mut self, node: &mut Ident) {
+        node.sym = format!("{}{:?}", node.sym, node.ctxt).into();
     }
 }

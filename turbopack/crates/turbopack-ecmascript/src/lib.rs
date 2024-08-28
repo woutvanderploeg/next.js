@@ -47,8 +47,9 @@ pub use static_code::StaticEcmascriptCode;
 use swc_core::{
     common::GLOBALS,
     ecma::{
-        codegen::{text_writer::JsWriter, Emitter},
-        visit::{VisitMutWith, VisitMutWithAstPath},
+        ast::Ident,
+        codegen::{text_writer::JsWriter, to_code, Emitter},
+        visit::{VisitMut, VisitMutWith, VisitMutWithAstPath},
     },
 };
 pub use transform::{
@@ -859,6 +860,22 @@ async fn gen_content_with_visitors(
                     ),
                 );
                 program.visit_mut_with(&mut swc_core::ecma::transforms::base::fixer::fixer(None));
+
+                eprintln!("# Print before hygiene\n{}", {
+                    let mut program = program.clone();
+                    program.visit_mut_with(&mut PrintHygiene);
+                    to_code(&program)
+                });
+
+                struct PrintHygiene;
+
+                impl VisitMut for PrintHygiene {
+                    fn visit_mut_ident(&mut self, node: &mut Ident) {
+                        node.sym = format!("{}{:?}", node.sym, node.ctxt).into();
+                    }
+                }
+
+                eprintln!("# Print\n{}", to_code(&program));
 
                 // we need to remove any shebang before bundling as it's only valid as the first
                 // line in a js file (not in a chunk item wrapped in the runtime)

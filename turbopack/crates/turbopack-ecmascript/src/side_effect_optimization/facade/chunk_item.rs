@@ -5,7 +5,7 @@ use swc_core::{
     common::{util::take::Take, Globals, GLOBALS},
     ecma::{
         ast::Program,
-        codegen::{text_writer::JsWriter, Emitter},
+        codegen::{text_writer::JsWriter, to_code, Emitter},
         visit::{VisitMutWith, VisitMutWithAstPath},
     },
 };
@@ -118,6 +118,11 @@ impl EcmascriptChunkItem for EcmascriptModuleFacadeChunkItem {
             program.visit_mut_with(&mut swc_core::ecma::transforms::base::hygiene::hygiene());
             program.visit_mut_with(&mut swc_core::ecma::transforms::base::fixer::fixer(None));
         });
+
+        eprintln!(
+            "# Print for side effect optimization\nprogram: {}",
+            to_code(&program)
+        );
 
         let mut bytes: Vec<u8> = vec![];
 
