@@ -31,6 +31,7 @@ import {
 } from '../helpers/hydration-error-info'
 import NodeJsIcon from '../components/icons/nodejs'
 import { CopyButton } from '../components/copy-button'
+import { isChromeDesktop } from '../../../../lib/is-chrome'
 
 export type SupportedErrorEvent = {
   id: number
@@ -68,6 +69,8 @@ function getErrorSignature(ev: SupportedErrorEvent): string {
   const _: never = event
   return ''
 }
+
+const isBrowserChromeDesktop = isChromeDesktop()
 
 export function Errors({
   isAppDir,
@@ -287,23 +290,24 @@ export function Errors({
                 {isServerError ? 'Server Error' : 'Unhandled Runtime Error'}
               </h1>
               <span>
-                {error.stack && (
-                  <CopyButton
-                    data-nextjs-data-runtime-error-copy-stack
-                    actionLabel="Copy error stack"
-                    successLabel="Copied"
-                    content={error.stack}
-                  />
-                )}
-                {debugInfo?.devtoolsFrontendUrl && (
-                  <CopyButton
-                    data-nextjs-data-runtime-error-copy-devtools-url
-                    actionLabel="Copy Chrome DevTools URL"
-                    successLabel="Copied"
-                    content={debugInfo.devtoolsFrontendUrl}
-                    icon={<NodeJsIcon width={16} height={16} />}
-                  />
-                )}
+                <CopyButton
+                  data-nextjs-data-runtime-error-copy-stack
+                  actionLabel="Copy error stack"
+                  successLabel="Copied"
+                  content={error.stack || ''}
+                  disabled={!error.stack}
+                />
+
+                <CopyButton
+                  data-nextjs-data-runtime-error-copy-devtools-url
+                  actionLabel="Copy Chrome DevTools URL"
+                  successLabel="Copied"
+                  content={debugInfo?.devtoolsFrontendUrl || ''}
+                  icon={<NodeJsIcon width={16} height={16} />}
+                  disabled={
+                    !debugInfo?.devtoolsFrontendUrl || !isBrowserChromeDesktop
+                  }
+                />
               </span>
             </div>
             <p
