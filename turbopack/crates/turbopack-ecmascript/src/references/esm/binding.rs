@@ -66,6 +66,7 @@ impl EsmBinding {
 
         let mut ast_path = item.ast_path.await?.clone_value();
         let imported_module = imported_module.await?.get_ident().await?;
+        dbg!(&imported_module, &ast_path);
 
         loop {
             match ast_path.last() {
