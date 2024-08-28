@@ -15,6 +15,7 @@ export function CopyButton({
   successLabel,
   content,
   icon,
+  disabled,
   ...props
 }: React.HTMLProps<HTMLButtonElement> & {
   actionLabel: string
@@ -79,7 +80,7 @@ export function CopyButton({
     // Remove from dependencies once https://github.com/facebook/react/pull/29665 is released.
     dispatch,
   ])
-  const isDisabled = isPending
+  const isDisabled = isPending || disabled
   const label = copyState.state === 'success' ? successLabel : actionLabel
   const title = label
 
